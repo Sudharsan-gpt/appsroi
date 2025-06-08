@@ -80,7 +80,7 @@ sub_cost = initial_sub_cost
 
 saving_pct = 0
 last_saving_pct = 0
-last_cleaning_month = ramp_up + cleaning_frequency
+last_cleaning_month = cleaning_frequency
 
 # Monthly Calculations
 for month in range(1, months + 1):
