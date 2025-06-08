@@ -30,22 +30,22 @@ with st.container():
     with col1:
         years = st.slider("Contract Duration (Years)", 1, 5, 3)
         months = years * 12
-        fleet_size = st.number_input("Fleet Size", min_value=1, value=1)
+        fleet_size = st.number_input("Fleet Size", min_value=1, value=10)
         fuel_price = st.number_input("Fuel Price ($/MT)", value=550.0)
-        daily_fuel = st.number_input("Daily Fuel Consumption (MT)", value=15.0)
+        daily_fuel = st.number_input("Daily Fuel Consumption (MT)", value=20.0)
         op_days = st.number_input("Operating Days per Year", value=200)
 
     with col2:
-        saving_hull = st.select_slider("Hull & Performance Saving (%)", options=np.arange(0, 5.5, 0.1), value=1.0)
-        saving_voyage = st.select_slider("Voyage Optimization Saving (%)", options=np.arange(0, 5.5, 0.1), value=1.0)
-        saving_emission = st.select_slider("Emission App Avoidance (%)", options=np.arange(0, 5.5, 0.1), value=0.3)
-        saving_scorecard = st.select_slider("Scorecard Avoidance (%)", options=np.arange(0, 5.5, 0.1), value=0.2)
-        saving_propulsion = st.select_slider("Propulsion Saving (%)", options=np.arange(0, 5.5, 0.1), value=0.0)
+        saving_hull = st.select_slider("Hull & Performance Saving (%)", options=np.arange(0, 6, 0.1), value=2.0)
+        saving_voyage = st.select_slider("Voyage Optimization Saving (%)", options=np.arange(0, 6, 0.1), value=1.0)
+        saving_emission = st.select_slider("Emission App Avoidance (%)", options=np.arange(0, 6, 0.1), value=0.5)
+        saving_scorecard = st.select_slider("Scorecard Avoidance (%)", options=np.arange(0, 6, 0.1), value=0.2)
+        saving_propulsion = st.select_slider("Propulsion Saving (%)", options=np.arange(0, 6, 0.1), value=0.0)
 
     with col3:
         cost_hull = st.number_input("Hull App Cost ($)", value=250.0)
         cost_voyage = st.number_input("Voyage App Cost ($)", value=250.0)
-        cost_emission = st.number_input("Emission App Cost ($)", value=0.0)
+        cost_emission = st.number_input("Emission App Cost ($)", value=250.0)
         cost_scorecard = st.number_input("Scorecard App Cost ($)", value=250.0)
         cost_propulsion = st.number_input("Propulsion App Cost ($)", value=0.0)
         initial_sub_cost = sum([cost_hull, cost_voyage, cost_emission, cost_scorecard, cost_propulsion])
@@ -61,8 +61,8 @@ with st.container():
             crew_cost = st.number_input("Crew Training Cost ($)", value=100.0)
             monthly_deterioration = st.number_input("Monthly Deterioration (%)", value=0.1) / 100
             yearly_sub_increase = st.number_input("Yearly Subscription Increase (%)", value=10.0) / 100
-        ramp_up_saving_pct = st.number_input("Ramp-up Saving % of Total", value=20.0) / 100
-        post_cleaning_saving_pct = st.number_input("Post-Hull Cleaning Saving %", value=60.0) / 100
+        ramp_up_saving_pct = st.number_input("Ramp-up Saving % of Total", value=60.0) / 100
+        post_cleaning_saving_pct = st.number_input("Post-Hull Cleaning Saving %", value=100.0) / 100
 
 # Derived values
 monthly_fuel_cost_base = fuel_price * daily_fuel * op_days / 12
