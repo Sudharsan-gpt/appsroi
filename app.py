@@ -87,11 +87,12 @@ for month in range(1, months + 1):
 
     if month < ramp_up:
         saving_pct = 0
+    elif month > ramp_up and month < cleaning_frequency:
+        saving_pct = total_saving_pct * ramp_up_saving_pct
     elif month % cleaning_frequency == 0 and month >= ramp_up:
         saving_pct = total_saving_pct * post_cleaning_saving_pct
         last_saving_pct = saving_pct
-    elif month > ramp_up and month < cleaning_frequency:
-        saving_pct = total_saving_pct * ramp_up_saving_pct
+
     else:
         last_saving_pct = max(0, last_saving_pct - (monthly_deterioration * 100))
         saving_pct = last_saving_pct
