@@ -61,7 +61,7 @@ with st.container():
             crew_cost = st.number_input("Crew Training Cost ($)", value=100.0)
             monthly_deterioration = st.number_input("Monthly Deterioration (%)", value=0.1) / 100
             yearly_sub_increase = st.number_input("Yearly Subscription Increase (%)", value=10.0) / 100
-        ramp_up_saving_pct = st.number_input("Ramp-up Saving % of Total", value=60.0) / 100
+        ramp_up_saving_pct = st.number_input("Post Ramp-up Saving % of Total", value=60.0) / 100
         post_cleaning_saving_pct = st.number_input("Post-Hull Cleaning Saving %", value=100.0) / 100
 
 # Derived values
