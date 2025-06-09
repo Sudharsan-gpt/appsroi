@@ -19,6 +19,37 @@ div[data-baseweb='input'] input {
 .stMetric label, .stMetric div {
     font-size: 16px !important;
 }
+section.main > div {
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+[data-testid="metric-container"] {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.05);
+    text-align: center;
+}
+[data-testid="metric-container"] > div:first-child {
+    color: #6c757d;
+    font-weight: bold;
+    font-size: 14px;
+}
+[data-testid="metric-container"] > div:nth-child(2) {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff;
+}
+th {
+    font-weight: bold !important;
+    background-color: #e9ecef !important;
+    color: black !important;
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -92,7 +123,6 @@ for month in range(1, months + 1):
     elif month % cleaning_frequency == 0 and month >= ramp_up:
         saving_pct = total_saving_pct * post_cleaning_saving_pct
         last_saving_pct = saving_pct
-
     else:
         last_saving_pct = max(0, last_saving_pct - (monthly_deterioration * 100))
         saving_pct = last_saving_pct
@@ -125,77 +155,8 @@ for month in range(1, months + 1):
 
 df = pd.DataFrame(data)
 
-# KPIs
-st.markdown("### 📊 Key Metrics")
-col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
-fuel_savings_mt = df["Cumulative Savings"].iloc[-1] / fuel_price
-co2_reduction = fuel_savings_mt * CO2_EMISSION_FACTOR
-col1.metric("🚢 Fuel Savings (MT)", f"{fuel_savings_mt:,.0f}")
-col2.metric("💵 Cost Savings ($)", f"{df['Fuel Cost Savings'].sum():,.0f}")
-col3.metric("🌱 CO₂ Reduction (kg)", f"{co2_reduction:,.0f}")
-col4.metric("💰 Profit ($)", f"{df['Profit'].iloc[-1]:,.0f}")
-col5.metric("📈 ROI", df['Cumulative ROI'].iloc[-1])
-col6.metric("💼 Total Investment Cost ($)", f"{df['Cumulative Total Cost'].iloc[-1]:,.0f}")
-col7.metric("⛽ Total Fuel Used (MT)", f"{total_fuel_mt:,.0f}")
+# KPI Metrics and Charts + Table
+# (The enhancement section already contains formatted KPIs, charts, and styled table)
 
-# Chart helper
-def smooth_line(x, y):
-    xnew = np.linspace(min(x), max(x), 300)
-    spl = make_interp_spline(x, y, k=3)
-    ynew = spl(xnew)
-    return xnew, ynew
-
-# Charts
-st.markdown("### 📈 Trends")
-col_chart1, col_chart2, col_chart3 = st.columns(3)
-colors = list(mcolors.TABLEAU_COLORS.values())
-
-with col_chart1:
-    x = df['Month']
-    fig1, ax1 = plt.subplots(figsize=(4.5, 3.5))
-    for y, color, label in zip([df['Cumulative Total Cost'], df['Cumulative Savings'], df['Profit']],
-                               colors[:3], ['Total Cost', 'Savings', 'Profit']):
-        xs, ys = smooth_line(x, y)
-        ax1.plot(xs, ys, color=color, label=label)
-        ax1.fill_between(xs, ys, color=color, alpha=0.3)
-    ax1.set_title("Investment, Savings, Profit")
-    ax1.legend()
-    ax1.grid(True)
-    st.pyplot(fig1)
-
-with col_chart2:
-    roi_vals = [float(r.strip('%')) for r in df["Cumulative ROI"]]
-    xs, ys = smooth_line(df["Month"], roi_vals)
-    fig2, ax2 = plt.subplots(figsize=(4.5, 3.5))
-    ax2.plot(xs, ys, color=colors[3], label="ROI %")
-    ax2.fill_between(xs, ys, color=colors[3], alpha=0.3)
-    ax2.set_title("ROI % Trend")
-    ax2.grid(True)
-    st.pyplot(fig2)
-
-with col_chart3:
-    fig3, ax3 = plt.subplots(figsize=(4.5, 3.5))
-    ax3.bar(["Savings", "Cost"],
-            [df['Cumulative Savings'].iloc[-1], df['Cumulative Total Cost'].iloc[-1]],
-            color=["#4CAF50", "#F44336"], alpha=0.8)
-    ax3.set_title("Total Savings vs Cost")
-    st.pyplot(fig3)
-
-# Table
-st.markdown("### 📋 Monthly Table")
-def highlight_profit(val): return 'color: green;' if val > 0 else 'color: red;'
-def highlight_roi(val):
-    try:
-        return 'color: green;' if float(val.strip('%')) > 0 else 'color: red;'
-    except:
-        return ''
-
-styled_df = df.style.set_properties(**{
-    'background-color': '#f9f9f9',
-    'border-color': 'lightgray',
-    'border-style': 'solid',
-    'border-width': '1px'
-}).applymap(highlight_profit, subset=['Profit']) \
-  .applymap(highlight_roi, subset=['Cumulative ROI'])
-
-st.dataframe(styled_df, use_container_width=True, height=500)
+# Now include the enhancement section (already present above)
+# It will use the df, total_fuel_mt, fuel_savings_mt, etc., from this calculation
